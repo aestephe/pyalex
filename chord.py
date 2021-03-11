@@ -4,8 +4,8 @@ import sys
 import itertools
 import statistics
 
-from alex.pitch import *
-from alex.utilities import *
+from pyalex.pitch import *
+from pyalex.utilities import *
 
 class PitchClassPointer:
 			
