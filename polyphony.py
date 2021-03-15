@@ -12,8 +12,8 @@ class VoiceId:
 	'''
 
 	def __init__(self, name, thread_id):
-		self.Name = name
-		self.ThreadId = thread_id
+		self.name = name
+		self.thread_id. = thread_id
 
 class QueuedVoiceManager:
 
@@ -56,12 +56,12 @@ class QueuedVoiceManager:
 
 			should_append = True
 			for elem in self._q:
-				if elem.Name == my_id.Name and elem.ThreadId == my_id.ThreadId:
+				if elem.name == my_id.name and elem.thread_id == my_id.thread_id:
 					should_append = False
-			if my_id.Name in self._banned_voices:
+			if my_id.name in self._banned_voices:
 				should_append = False
 			if not (self._vip_voice is None):
-				if not (self._vip_voice == my_id.Name):
+				if not (self._vip_voice == my_id.name):
 					should_append = False
 
 			if should_append:
@@ -76,16 +76,16 @@ class QueuedVoiceManager:
 
 	def leave_queue(self, my_id):
 
-		new_q = [elem for elem in self._q if (not elem.Name == my_id.Name and not elem.ThreadId == my_id.ThreadId)]
+		new_q = [elem for elem in self._q if (not elem.name == my_id.name and not elem.thread_id == my_id.thread_id)]
 
 		if len(new_q) > 0:
 
-			if new_q[0].Name == my_id.Name:
+			if new_q[0].name == my_id.name:
 				# no need to delay, because the next voice waiting to play is of the same type (has the same name)
 				pass
-			elif my_id.Name == "triads_interpretation" or new_q[0].Name == "triads_interruption":
+			elif my_id.name == "triads_interpretation" or new_q[0].name == "triads_interruption":
 				scamp.wait(0.66)
-			elif self.are_voices_closely_related(my_id.Name, new_q[0].Name):
+			elif self.are_voices_closely_related(my_id.name, new_q[0].name):
 				scamp.wait(self._get_dequeue_time() * self.closely_related_dequeue_multiplier)
 			else:
 				scamp.wait(self._get_dequeue_time())
@@ -95,7 +95,7 @@ class QueuedVoiceManager:
 
 		with self._lock:
 			self._q = new_q
-			self.previous_voices.append(my_id.Name)
+			self.previous_voices.append(my_id.name)
 			if len(self.previous_voices) > 2:
 				self.previous_voices.pop(0)
 
