@@ -3,10 +3,7 @@ import random
 import sys
 import itertools
 import threading
-
 import scamp
-
-
 
 class VoiceId:
 
