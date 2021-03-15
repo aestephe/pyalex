@@ -6,13 +6,29 @@ import threading
 
 import scamp
 
+
+
 class VoiceId:
+
+	'''
+	A simple wrapper for encoding information about a polyphonic voice.
+	'''
 
 	def __init__(self, name, thread_id):
 		self.Name = name
 		self.ThreadId = thread_id
 
-class ScampVoiceManager:
+class QueuedVoiceManager:
+
+	'''
+	Voice manager for polyphonic situations in which multiple voices cannot play at the same time
+		(e.g. in a piece for solo instrument).
+	Voices should call the manager to enter a queue and check for permission to play.
+	Only one voice is given permission to play at a time, and once a voice finishes and asks to leave
+		the queue, the manager waits a controllable amount of time before granting another voice permission.
+	N.B. this class is intended for use in projects deploying the SCAMP library
+		(the dequeueing procedure is handled via calls to scamp.wait()).
+	'''
 
 	def are_voices_closely_related(self, voice1_name, voice2_name):
 		out = False
