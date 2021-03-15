@@ -13,7 +13,7 @@ class VoiceId:
 
 	def __init__(self, name, thread_id):
 		self.name = name
-		self.thread_id. = thread_id
+		self.thread_id = thread_id
 
 class QueuedVoiceManager:
 
@@ -69,7 +69,7 @@ class QueuedVoiceManager:
 
 			out = False
 			if len(self._q) > 0:
-				if self._q[0].ThreadId == my_id.ThreadId:
+				if self._q[0].thread_id == my_id.thread_id:
 					out = True
 
 			return out
