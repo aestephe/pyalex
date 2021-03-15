@@ -28,13 +28,6 @@ class Randomizer:
 
 class RandomizerGroup:
 
-	def __init__(self):
-
-		self.randomizers = []
-		self.ban_repeat_average_value = False
-		self._last_average_value = None
-		self._seed_value = None
-
 	def __init__(self, nbr_randomizers, output_range, ban_repeat_average_value, seed_value = None):
 
 		self.randomizers = []
