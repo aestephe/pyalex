@@ -90,4 +90,12 @@ class Utilities:
 		# 1 = semitones, 0.5 = quarter-tones etc.
 		return round(midi * (1/pitch_quantization)) / (1/pitch_quantization)
 
+	def clip(value, minimum, maximum):
+		if minimum <= value <= maximum:
+			return value
+		elif value < minimum:
+			return minimum
+		elif value > maximum:
+			return maximum
+
 		

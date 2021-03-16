@@ -15,16 +15,14 @@ class Randomizer:
 
 	def get_value(self):
 		
-		self._clock += 1
 		if self._clock % self._clock_mod == 0:
 			self._value = random.randint(self._output_range[0], self._output_range[1])
 		else:
 			pass # don't update
 
-		return self._value
+		self._clock += 1
 
-	def update_output_range(self, output_range):
-		self._output_range = output_range
+		return self._value
 
 class RandomizerGroup:
 
@@ -62,7 +60,3 @@ class RandomizerGroup:
 		self._last_average_value = out
 
 		return out
-
-	def update_output_range(self, output_range):
-		for r in self.randomizers:
-			r.update_output_range(output_range)
