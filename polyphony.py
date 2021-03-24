@@ -83,10 +83,9 @@ class QueuedVoiceManager:
 			if new_q[0].name == my_id.name:
 				# no need to delay, because the next voice waiting to play is of the same type (has the same name)
 				pass
-			elif my_id.name == "triads_interpretation" or new_q[0].name == "triads_interruption":
-				scamp.wait(0.66)
 			elif self.are_voices_closely_related(my_id.name, new_q[0].name):
-				scamp.wait(self._get_dequeue_time() * self.closely_related_dequeue_multiplier)
+				if self.closely_related_dequeue_multiplier > 0:
+					scamp.wait(self._get_dequeue_time() * self.closely_related_dequeue_multiplier)
 			else:
 				scamp.wait(self._get_dequeue_time())
 
