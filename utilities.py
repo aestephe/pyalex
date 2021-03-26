@@ -2,6 +2,14 @@ import math
 
 class Utilities:
 
+	def mtof(midi):
+		return 440 * 2**((float(midi-69))/12)
+		
+
+	def ftom(freq):
+		return 69 + (12 * math.log(float(freq/440), 2))
+
+
 	def get_numerical_pitch_class(midi_pitch):
 		
 		rounded_pitch = 0
@@ -11,55 +19,26 @@ class Utilities:
 			rounded_pitch = int(round(midi_pitch))
 		
 		return rounded_pitch%12
-
-	def get_anglophone_pitch_class(midi_pitch):
-		rounded_pitch = 0
-		if (float(midi_pitch) % 1) >= 0.5:
-			rounded_pitch = int(math.ceil(midi_pitch))
-		else:
-			rounded_pitch = int(round(midi_pitch))
-
-		number = rounded_pitch%12
-		if number == 0:
-			return "C"
-		elif number == 1:
-			return "Db"
-		elif number == 2:
-			return "D"
-		elif number == 3:
-			return "Eb"
-		elif number == 4:
-			return "E"
-		elif number == 5:
-			return "F"
-		elif number == 6:
-			return "Gb"
-		elif number == 7:
-			return "G"
-		elif number == 8:
-			return "Ab"
-		elif number == 9:
-			return "A"
-		elif number == 10:
-			return "Bb"
-		elif number == 11:
-			return "B"
 	
+
 	def get_register(midi_pitch):
 		return str(int(round(midi_pitch, 0))/12 - 1)	
 		
+
 	def are_pcs_equal(midi_pitch1, midi_pitch2):
 		if Utilities.get_numerical_pitch_class(midi_pitch1) == Utilities.get_numerical_pitch_class(midi_pitch2):
 			return True
 		else:
 			return False
 			
+
 	def get_overtone_class(partial_number):
 		out = partial_number
 		while out%2 == 0:
 			out = out/2
 		return out
 	
+
 	def get_param_val(xml_root, parameter_name):
 		out = ""
 		results = xml_root.findall(parameter_name)
@@ -72,6 +51,7 @@ class Utilities:
 			out = result.text
 		return out
 	
+
 	def string_to_list_of_float(string):
 		out = []
 		if string is not None:
@@ -80,15 +60,11 @@ class Utilities:
 				out.append(float(list[i]))
 		return out
 		
-	def mtof(midi):
-		return 440 * 2**((float(midi-69))/12)
-		
-	def ftom(freq):
-		return 69 + (12 * math.log(float(freq/440), 2))
-		
+
 	def quantize_midi(midi, pitch_quantization):
 		# 1 = semitones, 0.5 = quarter-tones etc.
 		return round(midi * (1/pitch_quantization)) / (1/pitch_quantization)
+
 
 	def clip(value, minimum, maximum):
 		if minimum <= value <= maximum:
@@ -98,4 +74,75 @@ class Utilities:
 		elif value > maximum:
 			return maximum
 
-		
+
+	def clip_and_wrap(value, minimum, maximum, wrap_value):
+		if minimum <= value <= maximum:
+			return value
+		elif value < minimum:
+			while value < minimum:
+				value += wrap_value
+			return value
+		elif value > maximum:
+			while value > maximum:
+				value -= wrap_value
+			return value
+
+
+	def get_anglophone_pitch_class(midi_pitch, accidentals = "b"):
+
+		if accidentals != "b" and accidentals != "#":
+			raise ValueError("Argument accidentals should be specified as 'b' or '#'")
+
+		spell_with_flats = True
+		if accidentals == "b":
+			spell_with_flats = True
+		elif accidentals == "#":
+			spell_with_flats = False
+
+		rounded_pitch = 0
+		if (float(midi_pitch) % 1) >= 0.5:
+			rounded_pitch = int(math.ceil(midi_pitch))
+		else:
+			rounded_pitch = int(round(midi_pitch))
+
+		number = rounded_pitch%12
+
+		if number == 0:
+			return "C"
+		elif number == 1:
+			if spell_with_flats:
+				return "Db"
+			else:
+				return "C#"
+		elif number == 2:
+			return "D"
+		elif number == 3:
+			if spell_with_flats:
+				return "Eb"
+			else:
+				return "D#"
+		elif number == 4:
+			return "E"
+		elif number == 5:
+			return "F"
+		elif number == 6:
+			if spell_with_flats:
+				return "Gb"
+			else:
+				return "F#"
+		elif number == 7:
+			return "G"
+		elif number == 8:
+			if spell_with_flats:
+				return "Ab"
+			else:
+				return "G#"
+		elif number == 9:
+			return "A"
+		elif number == 10:
+			if spell_with_flats:
+				return "Bb"
+			else:
+				return "A#"
+		elif number == 11:
+			return "B"
