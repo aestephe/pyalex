@@ -24,6 +24,7 @@ class VoiceManager:
 	'''
 
 	def __init__(self):
+		self.should_try_play = True
 		self.current_chord = None
 
 
