@@ -13,6 +13,9 @@ class Randomizer:
 		self._clock = 0
 		self._value = 0
 
+	def update_output_range(self, output_range):
+		self._output_range = output_range
+
 	def get_value(self):
 		
 		if self._clock % self._clock_mod == 0:
@@ -34,6 +37,10 @@ class RandomizerGroup:
 		self.ban_repeat_average_value = ban_repeat_average_value
 		self._last_average_value = None
 		self._seed_value = seed_value
+
+	def update_output_range(self, output_range):
+		for r in self.randomizers:
+			r.update_output_range(output_range)
 
 	def get_average_value(self):
 
