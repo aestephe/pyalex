@@ -19,9 +19,12 @@ class VoiceId:
 
 class VoiceManager:
 
+	'''
+	A simple voice manager for coordinating some resources shared among voices.
+	'''
+
 	def __init__(self):
 		self.current_chord = None
-
 
 
 class QueuedVoiceManager:
