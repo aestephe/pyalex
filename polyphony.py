@@ -1,4 +1,5 @@
 import math
+from pyalex.chord import Chord
 import random
 import sys
 import itertools
@@ -14,6 +15,14 @@ class VoiceId:
 	def __init__(self, name, thread_id):
 		self.name = name
 		self.thread_id = thread_id
+
+
+class VoiceManager:
+
+	def __init__(self):
+		self.current_chord = None
+
+
 
 class QueuedVoiceManager:
 
@@ -42,6 +51,7 @@ class QueuedVoiceManager:
 		self.should_try_play = True 
 		self.closely_related_voices = []
 		self.closely_related_dequeue_multiplier = 1.0
+		self.current_chord = None
 
 		self._q = []
 		self._lock = threading.Lock()
