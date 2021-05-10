@@ -26,6 +26,7 @@ class VoiceManager:
 	def __init__(self):
 		self.should_try_play = True
 		self.current_chord = None
+		self.current_chord_duration = 0
 
 
 class QueuedVoiceManager:
@@ -56,6 +57,7 @@ class QueuedVoiceManager:
 		self.closely_related_voices = []
 		self.closely_related_dequeue_multiplier = 1.0
 		self.current_chord = None
+		self.current_chord_duration = 0
 
 		self._q = []
 		self._lock = threading.Lock()
