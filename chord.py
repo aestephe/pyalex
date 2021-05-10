@@ -22,12 +22,7 @@ class Chord:
 		# (is_harmonic_tone boolean encoded as 0 or 1)
 		out = (str(self.fundamental.midi_number)) + "~"
 		for p in self.pitches:
-			out += (str(p.midi_number) + ",")
-			out += (str(int(p.overtone_class)) + ",")
-			if p.is_harmonic_tone:
-				out += str(1)
-			else:
-				out += str(0)
+			out += str(p)
 			out += (";")
 		return out.rstrip(";")
 
@@ -133,14 +128,14 @@ class Chord:
 		
 		return out
 		
-	def from_string(str):
+	def from_string(s):
 		# expects strings of this format:
 		# fund~pitch1;pitch2;pitch3...
 		# each pitch is of format: midi_number,overtone_class,is_harmonic_tone
 		# (is_harmonic_tone boolean encoded as 0 or 1)		
 		out = Chord()
 		
-		l = str.split("~")
+		l = s.split("~")
 		if len(l) != 2:
 			raise ValueError("list of unexpected format")
 		
@@ -149,18 +144,7 @@ class Chord:
 		m = l[1].split(";")
 		
 		for el in m:
-			n = el.split(",")
-			if len(n) != 3:
-				raise ValueError("list of unexpected format")
-			b = True
-			if int(n[2]) == 1:
-				pass
-			elif int(n[2]) == 0:
-				b = False
-			else:
-				raise ValueError("list of unexpected format")
-			p = Pitch(float(n[0]), int(n[1]), b)
-			out.pitches.append(p)
+			out.pitches.append(Pitch.from_string(el))
 		
 		return out
 
