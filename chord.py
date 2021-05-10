@@ -18,7 +18,7 @@ class Chord:
 	def __str__(self):
 		# produces strings of this format:
 		# fund~pitch1;pitch2;pitch3...
-		# each pitch is of format: midi_number,overtone_class,is_common_tone
+		# each pitch is of format: midi_number,overtone_class,is_harmonic_tone
 		# (is_harmonic_tone boolean encoded as 0 or 1)
 		out = (str(self.fundamental.midi_number)) + "~"
 		for p in self.pitches:
@@ -119,7 +119,7 @@ class Chord:
 				if partial_midi >= lower_bound:
 					if partial_midi <= upper_bound:
 						if (partial_midi in out.get_midi_numbers()) == False:
-							out.pitches.append(Pitch(partial_midi, overtone_class, True, 1.0))
+							out.pitches.append(Pitch(partial_midi, overtone_class, True))
 					else:
 						should_continue = False 
 							# we've exceeded the desired upper bound, so we should stop adding octave transpositions
@@ -136,7 +136,7 @@ class Chord:
 	def from_string(str):
 		# expects strings of this format:
 		# fund~pitch1;pitch2;pitch3...
-		# each pitch is of format: midi_number,overtone_class,is_common_tone
+		# each pitch is of format: midi_number,overtone_class,is_harmonic_tone
 		# (is_harmonic_tone boolean encoded as 0 or 1)		
 		out = Chord()
 		
@@ -152,14 +152,14 @@ class Chord:
 			n = el.split(",")
 			if len(n) != 3:
 				raise ValueError("list of unexpected format")
-			bool = True
+			b = True
 			if int(n[2]) == 1:
 				pass
 			elif int(n[2]) == 0:
-				bool = False
+				b = False
 			else:
 				raise ValueError("list of unexpected format")
-			p = Pitch(float(n[0]), int(n[1]), bool)
+			p = Pitch(float(n[0]), int(n[1]), b)
 			out.pitches.append(p)
 		
 		return out
@@ -374,8 +374,7 @@ class Chord:
 				octaver += 1
 				candidate_midi = harmonic_midi - (12*octaver)
 				if nct_lower_bound <= candidate_midi <= nct_upper_bound:
-					self.pitches.append(Pitch(candidate_midi, nct_overtone_class, 
-											is_harmonic_tone = False, harmonicity_score = 1/(octaver+1)))
+					self.pitches.append(Pitch(candidate_midi, nct_overtone_class, False))
 				if candidate_midi < nct_lower_bound:
 					should_continue = False
 		
