@@ -119,6 +119,10 @@ class Utilities:
 				value -= wrap_value
 			return value
 
+ 
+	def scale(value, input_min, input_max, output_min, output_max):
+		return output_min + (((value - input_min) * (output_max - output_min)) / (input_max - input_min))
+
 
 	def get_anglophone_pitch_class(midi_pitch, accidentals = "b"):
 
