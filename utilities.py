@@ -98,6 +98,9 @@ class Utilities:
 		return round(midi * (1/pitch_quantization)) / (1/pitch_quantization)
 
 
+	def ratio_to_midi_interval(ratio):
+		return 12 * math.log(ratio, 2)
+
 	def clip(value, minimum, maximum):
 		if minimum <= value <= maximum:
 			return value
