@@ -101,6 +101,11 @@ class Utilities:
 	def ratio_to_midi_interval(ratio):
 		return 12 * math.log(ratio, 2)
 
+
+	def midi_interval_to_ratio(midi_interval):
+		return pow(2, (midi_interval/12))
+
+
 	def clip(value, minimum, maximum):
 		if minimum <= value <= maximum:
 			return value
