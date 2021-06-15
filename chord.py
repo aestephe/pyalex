@@ -1,4 +1,3 @@
-
 import math
 import sys
 import itertools
@@ -71,7 +70,7 @@ class Chord:
 			if partial_midi >= lower_bound:
 				if partial_midi <= upper_bound:
 					if (partial_midi in out.get_midi_numbers()) == False:
-						out.pitches.append(Pitch(partial_midi, Utilities.get_overtone_class(x)))
+						out.pitches.append(Pitch(partial_midi, x, Utilities.get_overtone_class(x)))
 					#total_pitches += 1
 					#if total_pitches >= max_pitches:
 					#	should_continue = False
@@ -108,13 +107,14 @@ class Chord:
 			
 			while should_continue:
 				m += 1
-				partial_freq = fund_freq * overtone_class
-				partial_midi = 12*m + Utilities.quantize_midi(Utilities.ftom(partial_freq), pitch_quantization)
-											
+				oc_freq = fund_freq * overtone_class
+				partial_midi = 12*m + Utilities.quantize_midi(Utilities.ftom(oc_freq), pitch_quantization)
+				partial_number = overtone_class * pow(2, m)
+
 				if partial_midi >= lower_bound:
 					if partial_midi <= upper_bound:
 						if (partial_midi in out.get_midi_numbers()) == False:
-							out.pitches.append(Pitch(partial_midi, overtone_class, True))
+							out.pitches.append(Pitch(partial_midi, partial_number, overtone_class, True))
 					else:
 						should_continue = False 
 							# we've exceeded the desired upper bound, so we should stop adding octave transpositions
@@ -131,7 +131,6 @@ class Chord:
 	def from_string(s):
 		# expects strings of this format:
 		# fund~pitch1;pitch2;pitch3...
-		# each pitch is of format: midi_number,overtone_class,is_harmonic_tone
 		# (is_harmonic_tone boolean encoded as 0 or 1)		
 		out = Chord()
 		
@@ -348,8 +347,9 @@ class Chord:
 			
 			# the midi pitch value if the overtone class were voiced as a partial in the series 
 			# (i.e. in the lowest possible "correct" octave)
-			harmonic_midi = Utilities.quantize_midi(Utilities.ftom(fund_freq * nct_overtone_class), pitch_quantization)
-			
+			harmonic_partial_number = nct_overtone_class
+			harmonic_midi = Utilities.quantize_midi(Utilities.ftom(fund_freq * harmonic_partial_number), pitch_quantization)
+
 			# add "incorrect" (inharmonic) versions of the pitch by transposing it down octave(s)
 			should_continue = True
 			octaver = 0
@@ -358,7 +358,10 @@ class Chord:
 				octaver += 1
 				candidate_midi = harmonic_midi - (12*octaver)
 				if nct_lower_bound <= candidate_midi <= nct_upper_bound:
-					self.pitches.append(Pitch(candidate_midi, nct_overtone_class, False))
+					self.pitches.append(Pitch(midi_number = candidate_midi, 
+												partial_number = harmonic_partial_number, 
+												overtone_class = harmonic_partial_number, 
+												is_harmonic_tone = False))
 				if candidate_midi < nct_lower_bound:
 					should_continue = False
 		
