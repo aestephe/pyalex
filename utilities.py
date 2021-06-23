@@ -39,7 +39,7 @@ class Utilities:
 		
 
 	def ftom(freq):
-		return 69 + (12 * math.log(float(freq/440), 2))
+		return 69 + (12 * math.log(float(abs(freq)/440), 2))
 
 
 	def get_numerical_pitch_class(midi_pitch):
@@ -91,11 +91,15 @@ class Utilities:
 			for i in range(0, len(list)):
 				out.append(float(list[i]))
 		return out
-		
+
+
+	def quantize(number, quantization):
+		return round(number * (1/quantization)) / (1/quantization)
+
 
 	def quantize_midi(midi, pitch_quantization):
 		# 1 = semitones, 0.5 = quarter-tones etc.
-		return round(midi * (1/pitch_quantization)) / (1/pitch_quantization)
+		return Utilities.quantize(number = midi, quantization = pitch_quantization)
 
 
 	def ratio_to_midi_interval(ratio):
@@ -130,6 +134,10 @@ class Utilities:
  
 	def scale(value, input_min, input_max, output_min, output_max):
 		return output_min + (((value - input_min) * (output_max - output_min)) / (input_max - input_min))
+
+
+	def multiply_symmetrically(value, axis, ratio):
+		return axis + ((value - axis) * ratio)
 
 
 	def get_anglophone_pitch_class(midi_pitch, accidentals = "b"):
