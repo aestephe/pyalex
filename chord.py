@@ -53,7 +53,7 @@ class Chord:
 				pitch_quantization = 1.0):
 	
 		out = Chord()
-		out.fundamental = fund_pitch.midi_number
+		out.fundamental = fund_pitch
 		out.pitches = []
 		
 		fund_freq = Utilities.mtof(fund_pitch.midi_number)
