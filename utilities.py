@@ -133,8 +133,9 @@ class Utilities:
 
  
 	def scale(value, input_min, input_max, output_min, output_max):
-		return output_min + (((value - input_min) * (output_max - output_min)) / (input_max - input_min))
-
+		# return output_min + (((value - input_min) * (output_max - output_min)) / (input_max - input_min))
+		percentile = (value - input_min) / (input_max - input_min)
+		return output_min + (percentile * (output_max - output_min))
 
 	def multiply_symmetrically(value, axis, ratio):
 		return axis + ((value - axis) * ratio)
