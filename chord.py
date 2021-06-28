@@ -285,6 +285,16 @@ class Chord:
 			return True
 		if false_count > true_count:
 			return False
+
+
+	def get_union(chord1, chord2):
+		out = chord1
+		for p in chord2.pitches:
+			if not p.midi_number in [q.midi_number for q in out.pitches]:
+				out.pitches.append(p)
+		out.sort_pitches_by_midi_number()
+		out.generate_pointers()
+		return out
 	
 	"""
 
