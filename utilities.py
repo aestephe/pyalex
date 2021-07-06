@@ -110,6 +110,33 @@ class Utilities:
 		return pow(2, (midi_interval/12))
 
 
+	def decimal_to_rational(decimal, max_denominator):
+		# https://www.johndcook.com/blog/2010/10/20/best-rational-approximation/
+		if (not 0 <= decimal <= 1):
+			raise ValueError("decimal must be between 0 and 1")
+
+		a, b = 0, 1
+		c, d = 1, 1
+		while (b <= max_denominator and d <= max_denominator):
+		    mediant = float(a+c)/(b+d)
+		    if decimal == mediant:
+		        if b + d <= max_denominator:
+		            return a+c, b+d
+		        elif d > b:
+		            return c, d
+		        else:
+		            return a, b
+		    elif decimal > mediant:
+		        a, b = a+c, b+d
+		    else:
+		        c, d = a+c, b+d
+
+		if (b > max_denominator):
+		    return c, d
+		else:
+		    return a, b
+
+
 	def clip(value, minimum, maximum):
 		if minimum <= value <= maximum:
 			return value
