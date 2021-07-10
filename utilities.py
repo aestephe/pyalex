@@ -152,11 +152,17 @@ class Utilities:
 		elif value < minimum:
 			while value < minimum:
 				value += wrap_value
-			return value
+			if value > maximum:
+				return maximum
+			else:
+				return value
 		elif value > maximum:
 			while value > maximum:
 				value -= wrap_value
-			return value
+			if value < minimum:
+				return minimum
+			else:
+				return value
 
  
 	def scale(value, input_min, input_max, output_min, output_max):
