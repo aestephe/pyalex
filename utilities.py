@@ -9,8 +9,11 @@ class LengthMultiplier:
 	def get_value(self):
 		return self._value
 
-	def clone(lm, expon):
-		return LengthMultiplier(lm.get_value() ** expon)
+	def clone(lm, expon, quant = None):
+		if quant is None:
+			return LengthMultiplier(lm.get_value() ** expon)
+		else:
+			return LengthMultiplier(Utilities.quantize(lm.get_value() ** expon, quant))
 
 class LengthMultiplierManager:
 
