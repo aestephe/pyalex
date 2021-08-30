@@ -1,5 +1,6 @@
 import math
 from pyalex.chord import Chord
+from pyalex.utilities import Utilities
 import random
 import sys
 import itertools
@@ -58,6 +59,7 @@ class QueuedVoiceManager:
 		self.closely_related_dequeue_multiplier = 1.0
 		self.current_chord = None
 		self.current_chord_duration = 0
+		self.time_quantization_value = None
 
 		self._q = []
 		self._lock = threading.Lock()
@@ -148,5 +150,7 @@ class QueuedVoiceManager:
 
 		with self._lock:
 			self._dequeue_iterator = (self._dequeue_iterator + 1) % len(self._dequeue_times)
-			return self._dequeue_times[self._dequeue_iterator]
-
+			time = self._dequeue_times[self._dequeue_iterator]
+			if self.time_quantization_value is not None:
+				time = Utilities.quantize(time, self.time_quantization_value)
+			return time
