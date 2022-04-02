@@ -86,6 +86,30 @@ class Chord:
 		
 		return out
 
+	def from_fund_and_partials(
+				fund_pitch,
+				partials,
+				pitch_quantization = 1.0):
+
+		out = Chord()
+		out.fundamental = fund_pitch
+		out.pitches = []
+
+		fund_freq = Utilities.mtof(fund_pitch.midi_number)
+
+		for partial_number in partials:
+			partial_midi = Utilities.quantize_midi(Utilities.ftom(fund_freq * partial_number), pitch_quantization)
+			overtone_class = partial_number
+			while overtone_class % 2 == 0:
+				overtone_class = overtone_class/2
+			out.pitches.append(Pitch(partial_midi, overtone_class, overtone_class, True))
+			
+		out.sort_pitches_by_midi_number()
+		out.generate_pointers()
+		
+		return out
+
+
 	def from_fund_and_overtone_classes(
 				fund_pitch, 
 				overtone_classes, 
