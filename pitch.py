@@ -31,16 +31,19 @@ class Pitch:
 	def from_string(s):
 
 			n = s.split(",")
-			if len(n) != 4:
+			if len(n) not in [3,4]:
 				raise ValueError("list of unexpected format")
 			b = True
-			if int(n[3]) == 1:
+			if int(n[-1]) == 1:
 				pass
-			elif int(n[3]) == 0:
+			elif int(n[-1]) == 0:
 				b = False
 			else:
 				raise ValueError("list of unexpected format")
-			return Pitch(float(n[0]), float(n[1]), int(n[2]), b)
+			if len(n) == 3:
+				return Pitch(midi_number = float(n[0]), partial_number = None, overtone_class = int(n[1]), is_harmonic_tone = b)
+			elif len(n) == 4:
+				return Pitch(midi_number = float(n[0]), partial_number = float(n[1]), overtone_class = int(n[2]), is_harmonic_tone = b)
 
 	def array_from_midi(midi_numbers):
 		
